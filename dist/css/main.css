@@ -3,6 +3,17 @@ body {
   font-family: "Inria Sans", sans-serif;
 }
 
+.aside{
+  position: sticky;
+  top: 0px;
+  grid-column: span 1 / span 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100vh;
+  padding-top: 0.75rem;
+}
+
 /*
 ! tailwindcss v3.1.4 | MIT License | https://tailwindcss.com
 */
@@ -531,4 +542,10 @@ video {
   --tw-backdrop-opacity:  ;
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
+}
+.grid{
+  display: grid;
+}
+.grid-cols-10{
+  grid-template-columns: repeat(10, minmax(0, 1fr));
 }
