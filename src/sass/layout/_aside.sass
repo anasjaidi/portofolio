@@ -1,20 +1,42 @@
 //- start large screen styles
+// @media screen and (max-width: 1300px)
+.container-fluid 
+    @apply grid grid-cols-10
+.menu
+    @apply hidden
 .aside
-    @apply bg-blue-500
+    @apply col-span-1  bg-[#00ADB5] h-screen flex flex-col justify-between py-3 items-center text-center 
+.i
+    @apply block text-2xl
+span
+    @apply text-lg ml-1 hidden
+.icon 
+    @apply flex items-center p-3 capitalize  text-white transition duration-500 hover:text-[#222831]
+.more
+    @apply text-2xl text-white hover:text-[#222831]
+
+
+nav:hover span
+    display: block
+    animation: span_show .4s
 
 
 //- start mediuem screen styles
 @media screen and (max-width: 992px)
+    .container-fluid 
+        @apply grid grid-cols-12
     .aside
-        @apply bg-green-500
+        @apply col-span-2
 
 
 //- start small screen styles
 @media screen and (max-width: 712px)
+    .container-fluid
+        @apply block
     .aside
-        @apply flex justify-between items-center p-2 bg-[#00ADB5] relative
+        @apply flex flex-row justify-between items-center p-2 bg-[#00ADB5] relative h-auto
     .menu
-        @apply text-2xl
+        @apply text-2xl block
     nav
         @apply hidden absolute bottom-[-38%] bg-[#00ADB5] left-[12%] w-[80vw]  rounded-md p-2 text-white capitalize
     .links 
@@ -23,3 +45,16 @@
         @apply hidden
     .more
         @apply hidden
+    span
+        @apply block
+    .icon
+        @apply p-0
+
+@keyframes span_show 
+     0% 
+          opacity: 0
+          transform: scale(0)
+
+     100%
+          opacity: 1
+          transform: scale(1)
