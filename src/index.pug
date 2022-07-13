@@ -7,14 +7,13 @@ html(lang="en")
         title Document
         link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.1.1/css/all.css")
         link(rel="stylesheet", href="./css/main.css")
-        script(src="./js/main.js")
         //- script(src="https://kit.fontawesome.com/97edd601e7.js" crossorigin="anonymous")
     body
         //- start container
         .container-fluid
 
             //- start aside nav
-            .aside
+            .aside(id="aside")
 
                 //- start logo 
                 .logo: img(src="./img/logo.png")
@@ -23,14 +22,16 @@ html(lang="en")
                 - var icons = ["fa-light fa-house", "fa-light fa-user", "fa-light fa-laptop", "fa-light fa-folder-tree", "fa-light fa-phone"] 
                 - var labels = ["home", "about", "skills", "projects", "conect"] 
                 - var labelsc = ["active"] 
-                i(class="fa-regular fa-bars menu")
-                nav
-                    -  for (var i = 0; i < icons.length; i++)
-                        a.icon(class=labelsc[i])
-                            i(class="i " + icons[i])
-                            span #{labels[i]}             
+                i(class="fa-regular fa-bars menu" id="menu1")
+                nav(id="nav")
+                    .links
+                        -  for (var i = 0; i < icons.length; i++)
+                            a.icon(class=labelsc[i])
+                                i(class="i " + icons[i])
+                                span #{labels[i]}             
                 //- start bottom icon
                 .more
                     i(class="fa-light fa-arrow-down i")
             //- start main section container
             .main
+    script(src="./js/main.js")

@@ -37,14 +37,9 @@ body {
   nav{
     position: absolute;
     bottom: -38%;
-    left: 10%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    left: 12%;
     display: none;
     width: 80vw;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
     border-radius: 0.375rem;
     --tw-bg-opacity: 1;
     background-color: rgb(0 173 181 / var(--tw-bg-opacity));
@@ -52,6 +47,14 @@ body {
     text-transform: capitalize;
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+  .links{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
   }
   .i{
     display: none;
