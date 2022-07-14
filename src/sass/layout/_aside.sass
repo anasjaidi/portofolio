@@ -2,13 +2,15 @@
 // @media screen and (max-width: 1300px)
 .container-fluid 
     @apply grid grid-cols-10
+.main
+    @apply col-span-9
 .menu
     @apply hidden
 .aside
-    @apply col-span-1  bg-[#00ADB5] h-screen flex flex-col justify-between py-3 items-center text-center 
+    @apply col-span-1  bg-[#00ADB5] h-screen flex flex-col justify-between py-3 items-center text-center sticky top-0  sticky top-0
 .i
     @apply block text-2xl
-span
+nav span
     @apply text-lg ml-1 hidden
 .icon 
     @apply flex items-center p-3 capitalize  text-white transition duration-500 hover:text-[#222831]
@@ -27,6 +29,8 @@ nav:hover span
         @apply grid grid-cols-12
     .aside
         @apply col-span-2
+    .main
+        @apply col-span-10
 
 
 //- start small screen styles
@@ -39,13 +43,13 @@ nav:hover span
         @apply text-2xl block
     nav
         @apply hidden absolute bottom-[-38%] bg-[#00ADB5] left-[12%] w-[80vw]  rounded-md p-2 text-white capitalize
-    .links 
+    .links-nav
         @apply w-full  flex justify-around 
     .i
         @apply hidden
     .more
         @apply hidden
-    span
+    nav span
         @apply block
     .icon
         @apply p-0

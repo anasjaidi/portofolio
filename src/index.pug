@@ -24,7 +24,7 @@ html(lang="en")
                 - var labelsc = ["active"] 
                 i(class="fa-regular fa-bars menu" id="menu1")
                 nav(id="nav")
-                    .links
+                    .links-nav
                         -  for (var i = 0; i < icons.length; i++)
                             a.icon(class=labelsc[i])
                                 i(class="i " + icons[i])
@@ -34,4 +34,23 @@ html(lang="en")
                     i(class="fa-light fa-arrow-down i")
             //- start main section container
             .main
+                .home
+                    .p1
+                        .text
+                            p.hi HI THERE! I'M
+                            h1.me <span class="fname"> ANAS </span> JAIDI
+                            p.short-about A <span class="job">Front-End Web DESIGNER & Developer </span> passionate about creating interactive applications and experiences on the web.
+                        .links
+                            .cv
+                                a
+                                    span resume 
+                                    i(class="fa-duotone fa-arrow-down-to-arc")
+                            .socials
+                                a: i(class="fa-brands fa-github")
+                                a: i(class="fa-brands fa-linkedin")
+                                a: i(class="fa-brands fa-twitter")
+                    .imgs
+                        img(src="", alt="", srcset="")
+                    
+                    
     script(src="./js/main.js")
