@@ -41,7 +41,6 @@ const pugFunction = function (){
 }
 const jsFunction = function (){
 	return src(jsFiles)
-			.pipe(concat('main.js'))
 			.pipe(dest(jsDest));
 }
 const	cssminFunction = function (){
