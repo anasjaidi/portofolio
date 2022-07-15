@@ -7,6 +7,7 @@ html(lang="en")
         title Document
         link(rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.1.1/css/all.css")
         link(rel="stylesheet", href="./css/main.css")
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css")
         //- script(src="https://kit.fontawesome.com/97edd601e7.js" crossorigin="anonymous")
     body
         //- start container
@@ -42,13 +43,13 @@ html(lang="en")
                             p.short-about A <span class="job">Digital IT Architect, Front-End Web DESIGNER & Developer </span> passionate about creating interactive applications and experiences on the web.
                         .links
                             .cv
-                                a
+                                a(href="pdf/jaidicv.pdf" target="_blank")
                                     span resume 
                                     i(class="fa-duotone fa-arrow-down-to-arc")
                             .socials
-                                a: i(class="fa-brands fa-github")
-                                a: i(class="fa-brands fa-linkedin")
-                                a: i(class="fa-brands fa-twitter")
+                                a(href="https://github.com/Anasjaidi" target="_blank"): i(class="fa-brands fa-github" )
+                                a(href="https://www.linkedin.com/in/anasjaidi/" target="_blank"): i(class="fa-brands fa-linkedin")
+                                a(href="https://twitter.com/0xJaidi" target="_blank"): i(class="fa-brands fa-twitter")
                     .imgs(id="my_img")
                         .d1
                         .d2
@@ -70,7 +71,17 @@ html(lang="en")
                     .sub-title 
                         hr
                         span check out my
+                    -var skillsicon = ["devicon-html5-plain", "devicon-css3-plain", "devicon-sass-original",  "fa-brands fa-deviantart", "devicon-bootstrap-plain", "devicon-tailwindcss-original-wordmark", "devicon-gulp-plain", "devicon-javascript-plain", "devicon-react-original", "devicon-npm-original-wordmark", "devicon-bash-plain", "devicon-git-plain", "devicon-figma-plain"]
+                       -var skillstext = ["html", "css", "sass", "pugjs", "bootstrap", "tawilwindcss", "gulp", "javascript", "react", "npm", "bash", "git", "figma"]
+                    .skills-techs
+                       -for (var i = 0; i < skillsicon.length ; i++)
+                        .skill 
+                            i(class=skillsicon[i])
+                            span #{skillstext[i]}
+          
+                    
                     
     script(src="./js/main.js")
     script(src="./js/anime.min.js")
     script(src="./js/anime.app.js")
+    cript(src="https://code.iconify.design/2/2.2.1/iconify.min.js")

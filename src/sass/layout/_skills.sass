@@ -2,3 +2,16 @@
     @apply p-12 h-screen bg-[#222831] text-white
 .skills .title span 
     @apply tracking-[.7em]
+.skills-techs
+    @apply flex flex-wrap  pt-16 lg:pt-28 md:pt-24 lg:px-32 md:px-20 justify-center
+.skill
+    @apply flex flex-col items-center transition duration-700 p-8 relative
+.skill i 
+    @apply lg:text-6xl md:text-4xl text-3xl mb-1 transition duration-700
+.skill span 
+    @apply uppercase font-extralight tracking-wider transition duration-700 absolute bottom-0
+.skill:hover
+    i
+        @apply sm:text-[#00ADB5] sm:opacity-20
+    span
+        @apply sm:-translate-y-12 sm:text-xl

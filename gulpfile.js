@@ -44,26 +44,30 @@ const jsFunction = function (){
 			.pipe(dest(jsDest));
 }
 const	cssminFunction = function (){
-	return src('../dist/css/main.css')
+	return src('./dist/css/main.css')
 			.pipe(cssmin())
 			.pipe(rename('all.min.css'))
 			.pipe(dest(sassDest));
 }
 const	jsminFunction = function (){
-	return src('../dist/js/main.js')
+	return src('dist/js/main.js')
 			.pipe(jsmin())
 			.pipe(rename('all.min.js'))
 			.pipe(gulp.dest(jsDest));
 }
 const	htmlminFunction = function (){
-	return src('../dist/index.html')
+	return src('dist/index.html')
 			.pipe(htmlmin({collapseWhitespace:true}))
 			.pipe(dest(pugDest));
 }
 const	imgminFunction = function () {
-	return	src('../dist/imgs/**/*')
+	return	src('dist/imgs/**/*')
 			.pipe(imgmin())
 			.pipe(dest(imgDest));
+}
+const	cvFunction = function () {
+	return	src('./src/pdf/jaidicv.pdf')
+			.pipe(dest('./dist/pdf'));
 }
 var	imgFunction = function (){
 	return src(imgFiles)
@@ -94,6 +98,7 @@ var	watchFunction = function (){
 	gulp.watch(jsFiles, series(jsFunction, sync));
 	gulp.watch(imgDest, series(imgFunction, sync));
 	gulp.watch('./dist/**/*', sync);
+	gulp.watch('./src/pdf/*', cvFunction);
 }
 
 // create tasks 
@@ -106,7 +111,8 @@ exports.cssmin = cssminFunction;
 exports.min = minFunction;
 exports.img = imgFunction;
 exports.server = serverFunction;
+exports.cv = cvFunction;
 exports.watch = watchFunction;
 
 // default gulp task
-exports.default = series(sassFunction, pugFunction, jsFunction, imgFunction, serverFunction, watchFunction);
+exports.default = series(sassFunction, cvFunction, pugFunction, jsFunction, imgFunction, serverFunction, watchFunction);
