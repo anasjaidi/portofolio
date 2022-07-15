@@ -422,81 +422,6 @@ nav:hover span {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.title{
-  margin-bottom: 3rem;
-  text-align: center;
-}
-
-.title h2 {
-  font-family: "Gugi", cursive;
-  position: relative;
-  text-align: center;
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-@media (min-width: 640px){
-  .title h2{
-    font-size: 3rem;
-    line-height: 1;
-  }
-}
-
-.title h2:before {
-  content: "";
-  position: absolute;
-  bottom: -0.25rem;
-  height: 2px;
-  width: 180px;
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-@media (min-width: 640px){
-  .title h2:before{
-    width: 275px;
-  }
-}
-
-.title span {
-  font-family: "Griffy", cursive;
-  margin-top: 0.75rem;
-  display: inline-block;
-  font-weight: 200;
-  text-transform: capitalize;
-  letter-spacing: 4px;
-}
-
-@media (min-width: 640px){
-  .title span{
-    letter-spacing: 8px;
-  }
-}
-
-.sub-title{
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.sub-title hr{
-  margin-right: 0.75rem;
-  width: 9rem;
-}
-
-.sub-title span {
-  font-family: "Gugi";
-  font-size: 0.75rem;
-  line-height: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .about-text {
   word-spacing: 0.25em;
   line-height: 300%;
@@ -546,6 +471,87 @@ nav:hover span {
     -moz-text-align-last: center;
          text-align-last: center;
   }
+  .sub-title{
+    display: none;
+  }
+  .title span{
+    display: none;
+  }
+}
+.skills{
+  height: 100vh;
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 40 49 / var(--tw-bg-opacity));
+  padding: 3rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.skills .title span{
+  letter-spacing: .7em;
+}
+
+.title{
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.title h2 {
+  font-family: "Gugi", cursive;
+  position: relative;
+  display: inline-block;
+  border-bottom-width: 2px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(255 255 255 / var(--tw-border-opacity));
+  padding-bottom: 0.25rem;
+  text-align: center;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 640px){
+  .title h2{
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: .3em;
+  }
+}
+
+.title span {
+  font-family: "Griffy", cursive;
+  margin-top: 0.75rem;
+  display: block;
+  font-weight: 200;
+  text-transform: capitalize;
+  letter-spacing: 1em;
+}
+
+.sub-title{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sub-title hr{
+  margin-right: 0.75rem;
+  width: 9rem;
+}
+
+.sub-title span {
+  font-family: "Gugi";
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@media screen and (max-width: 1006px) {
   .sub-title{
     display: none;
   }
