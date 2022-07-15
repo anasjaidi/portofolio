@@ -1,0 +1,54 @@
+.about 
+    @apply h-screen bg-[#393E46] text-white p-12
+.title
+    @apply text-center mb-12
+.title h2
+    font-family: 'Gugi', cursive
+    @apply text-center uppercase sm:text-5xl text-3xl tracking-widest relative
+.title h2:before
+    content: ''
+    @apply sm:w-[275px] w-[180px] h-[2px] bg-[white] absolute -bottom-1
+.title span
+    font-family: 'Griffy', cursive
+    @apply  sm:tracking-[8px] tracking-[4px] capitalize font-extralight inline-block mt-3
+.sub-title
+    @apply flex items-center
+.sub-title hr
+    @apply w-36 mr-3
+.sub-title span
+    font-family: 'Gugi' 
+    @apply tracking-widest uppercase text-xs
+.about-text
+    word-spacing: 0.25em
+    line-height: 300%
+    @apply p-12  text-justify  uppercase px-32 mt-8
+.about-text p
+    word-spacing: 0.25em
+    line-height: 200%
+    font-size: 18px
+    text-align: justify
+    text-align-last: center
+
+@media screen and (max-width: 1006px)
+    .about-text
+        word-spacing: 0.15em
+        line-height: 200%
+        @apply p-6  uppercase mt-8
+    .about-text p
+        font-size: 18px
+        text-align: justify
+        text-align-last: center
+@media screen and (max-width: 712px)
+    .about-text
+        margin-top: 100px
+        word-spacing: 0.15em
+        line-height: 1500%
+        @apply p-2 uppercase
+    .about-text p
+        font-size: 16px
+        text-align: justify
+        text-align-last: center
+    .sub-title
+        @apply hidden
+    .title span
+        @apply hidden
