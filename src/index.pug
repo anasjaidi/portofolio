@@ -43,7 +43,7 @@ html(lang="en")
                             p.short-about A <span class="job">Digital IT Architect, Front-End Web DESIGNER & Developer </span> passionate about creating interactive applications and experiences on the web.
                         .links
                             .cv
-                                a(href="pdf/jaidicv.pdf" target="_blank")
+                                a(href="pdf/jaidicv.pdf" target="_blank" class="btn")
                                     span resume 
                                     i(class="fa-duotone fa-arrow-down-to-arc")
                             .socials
@@ -71,14 +71,32 @@ html(lang="en")
                     .sub-title 
                         hr
                         span check out my
-                    -var skillsicon = ["devicon-html5-plain", "devicon-css3-plain", "devicon-sass-original",  "fa-brands fa-deviantart", "devicon-bootstrap-plain", "devicon-tailwindcss-original-wordmark", "devicon-gulp-plain", "devicon-javascript-plain", "devicon-react-original", "devicon-npm-original-wordmark", "devicon-bash-plain", "devicon-git-plain", "devicon-figma-plain"]
-                       -var skillstext = ["html", "css", "sass", "pugjs", "bootstrap", "tawilwindcss", "gulp", "javascript", "react", "npm", "bash", "git", "figma"]
+                    -var skillsicon = ["devicon-html5-plain", "devicon-css3-plain", "devicon-sass-original",  "fa-brands fa-deviantart", "devicon-bootstrap-plain", "devicon-tailwindcss-original-wordmark", "devicon-gulp-plain", "devicon-javascript-plain", "devicon-react-original", "devicon-npm-original-wordmark", "devicon-bash-plain", "devicon-git-plain", "devicon-figma-plain", "devicon-c-line", "devicon-cplusplus-line"]//- "devicon-docker-plain"
+                       -var skillstext = ["html", "css", "sass", "pugjs", "bootstrap", "tawilwindcss", "gulp", "javascript", "react", "npm", "bash", "git", "figma", "C", "c++"] //- "docker"
                     .skills-techs
                        -for (var i = 0; i < skillsicon.length ; i++)
                         .skill 
                             i(class=skillsicon[i])
                             span #{skillstext[i]}
-          
+                .projects 
+                    .title 
+                        h2 projects
+                        span robin hood
+                    .sub-title 
+                        hr
+                        span take look at my
+                    .main-projects 
+                        .project
+                            .img 
+                                img(src="#", alt="")
+                            .text-box 
+                                .techs html, css
+                                .name leaon template 
+                                .description representing a web agency website 
+                                .btns
+                                    a.btn live demo
+                                    a.btn github repo
+
                     
                     
     script(src="./js/main.js")
