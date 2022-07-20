@@ -1,0 +1,37 @@
+.contact
+    @apply p-12 bg-[#222831] text-white
+.message-form
+    @apply p-12 flex items-center flex-col
+    span
+        font-weight: 100
+        letter-spacing: 4px
+        font-size: 12px
+        @apply uppercase block my-3
+input
+    background: transparent
+    outline: none
+    border: .5px solid white
+    width: 45vw
+    height: 32px
+    max-width: 720px
+    min-width: 180px
+    padding: 5px 12px
+    font-weight: 100
+    letter-spacing: 4px
+    font-size: 12px
+.name-form
+    width: 45vw
+    max-width: 720px
+    @apply flex justify-between
+    input
+        width: 20vw
+        max-width: 340px
+        min-width: 85px
+.message
+    input 
+        height: 90px
+.send
+    padding: 5px 26px
+    margin: 30px 0
+    transition-duration: .5s
+    @apply uppercase font-light tracking-widest text-base border border-solid border-white flex items-center hover:border-[#00ADB5] hover:bg-[#00ADB5]

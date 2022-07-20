@@ -1,6 +1,6 @@
 
 .home
-    @apply bg-[#222831] text-white h-screen p-[40px] flex items-center grid grid-cols-6 px-16
+    @apply bg-[#222831] text-white min-h-screen p-[40px] flex items-center grid grid-cols-6 px-16
 .links
     @apply flex justify-between px-6 mt-8 cursor-pointer
 .main .socials
@@ -26,6 +26,10 @@
     .imgs
         @apply hidden
 @media screen and (max-width: 712px)
+    .home
+        @apply text-base px-3
+    .btn
+        padding: 5px 12px
     .p1 , .short-about
         @apply text-center
     .me

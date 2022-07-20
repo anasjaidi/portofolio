@@ -1,10 +1,10 @@
 .projects
-    @apply p-12 bg-[#393E46] h-screen text-white 
+    @apply p-12 bg-[#393E46] min-h-screen text-white 
 .main-projects
     @apply px-12 py-20 flex justify-end
 .project
     position: relative
-    @apply w-[30vw] h-[120%]
+    @apply w-[30vw] h-[120%] min-w-[210px]
     .img
         @apply w-full h-full 
 .text-box
@@ -40,5 +40,8 @@
         left: -120%
         @apply w-[50vw] py-4 px-8
 @media screen and (max-width: 712px)
+    .text-box
+        top: 80%
+        left: -30%
     .text-box
         text-align: center

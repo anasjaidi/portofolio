@@ -71,8 +71,8 @@ html(lang="en")
                     .sub-title 
                         hr
                         span check out my
-                    -var skillsicon = ["devicon-html5-plain", "devicon-css3-plain", "devicon-sass-original",  "fa-brands fa-deviantart", "devicon-bootstrap-plain", "devicon-tailwindcss-original-wordmark", "devicon-gulp-plain", "devicon-javascript-plain", "devicon-react-original", "devicon-npm-original-wordmark", "devicon-bash-plain", "devicon-git-plain", "devicon-figma-plain", "devicon-c-line", "devicon-cplusplus-line"]//- "devicon-docker-plain"
-                       -var skillstext = ["html", "css", "sass", "pugjs", "bootstrap", "tawilwindcss", "gulp", "javascript", "react", "npm", "bash", "git", "figma", "C", "c++"] //- "docker"
+                    -var skillsicon = ["devicon-html5-plain", "devicon-css3-plain", "devicon-sass-original",  "fa-brands fa-deviantart", "devicon-bootstrap-plain", "devicon-gulp-plain", "devicon-tailwindcss-original-wordmark", "devicon-javascript-plain", "devicon-react-original", "devicon-npm-original-wordmark", "devicon-bash-plain", "devicon-git-plain", "devicon-figma-plain", "devicon-c-line", "devicon-cplusplus-line"]//- "devicon-docker-plain"
+                       -var skillstext = ["html", "css", "sass", "pugjs", "tawilwindcss", "gulp", "bootstrap", "javascript", "react", "npm", "bash", "git", "figma", "C", "c++"] //- "docker"
                     .skills-techs
                        -for (var i = 0; i < skillsicon.length ; i++)
                         .skill 
@@ -96,6 +96,32 @@ html(lang="en")
                                 .btns
                                     a.btn-p live demo
                                     a.btn-p github repo
+                .contact 
+                    .title 
+                        h2 conect
+                        span robin hood
+                    .sub-title 
+                        hr
+                        span say hello
+                    form(action="" class="message-form")
+                        .name-form 
+                            .first-name
+                                span first name
+                                input
+                            .last-name
+                                span last name
+                                input
+                        .email 
+                            span email 
+                            input
+                        .subject 
+                            span subject
+                            input
+                        .message 
+                            span message
+                            input
+                        .send send
+                        
 
                     
                     

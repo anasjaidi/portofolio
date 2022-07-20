@@ -1,5 +1,5 @@
 .skills
-    @apply p-12 h-screen bg-[#222831] text-white
+    @apply p-12 min-h-screen bg-[#222831] text-white
 .skills .title span 
     @apply tracking-[.7em]
 .skills-techs
@@ -15,3 +15,8 @@
         @apply sm:text-[#00ADB5] sm:opacity-20 
     span
         @apply sm:-translate-y-12 sm:text-xl delay-300
+@media screen and (max-width: 712px)
+    .skills
+        @apply px-4
+    .skills-techs
+        @apply p-2
