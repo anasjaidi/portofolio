@@ -1,3 +1,44 @@
 .projects
-    @apply p-12 bg-[#393E46] h-screen text-white
-    
+    @apply p-12 bg-[#393E46] h-screen text-white 
+.main-projects
+    @apply px-12 py-20 flex justify-end
+.project
+    position: relative
+    @apply w-[30vw] h-[120%]
+    .img
+        @apply w-full h-full 
+.text-box
+    min-width: 350px
+    max-width: 900px
+    letter-spacing: 3px
+    position: absolute !important
+    top: 20%
+    left: -150%
+    @apply bg-[#222831] py-6 px-12 w-[50vw] uppercase font-thin relative text-xs
+    .name
+        @apply text-[#00ADB5] my-2 text-base
+    .btns
+        @apply mt-6
+.text-box:after
+    content: ''
+    width: 100%
+    position: absolute
+    height: 4px
+    top: 0
+    left: 0
+    @apply bg-[#00ADB5]
+.btn-p
+    font-size: 10px
+    @apply px-2 py-[6px] border border-white border-solid mr-5 transition duration-500
+
+.btn-p:hover
+    box-shadow: 0 0 50px #00ADB5
+    @apply border-[#00ADB5] bg-[#00ADB5]
+@media screen and (max-width: 1006px)
+    .text-box
+        top: 80%
+        left: -120%
+        @apply w-[50vw] py-4 px-8
+@media screen and (max-width: 712px)
+    .text-box
+        text-align: center
