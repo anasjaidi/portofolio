@@ -13,3 +13,39 @@ menu.addEventListener('click', function myFunction() {
         aside.style.background = "transparent";
     }
   });
+
+const removeAllActiveLinks = (sections) => {
+  sections.forEach(section => {
+    const link = document.querySelector('.link-' + section)
+
+      if (!link) return ;
+
+      link.classList.remove('active');
+  })
+}
+
+document.addEventListener('scroll', () => {
+  const sections = ["home", "about", "skills", "projects", "contact"]
+  const colors = ['#00ADB5', '#393E46', '#222831', '#393E46', '#222831']
+
+  sections.forEach(section => {
+    if (inviewport(section)) {
+      const link = document.querySelector('.link-' + section)
+      const sidepanel = document.getElementById('aside')
+
+      if (!link || !sidepanel) return ;
+
+      removeAllActiveLinks(sections)
+
+      link.classList.add('active')
+      sidepanel.style.backgroundColor = colors[sections.indexOf(section)]
+    }
+
+    if (section === 'skills') console.log('skills in viewport: ' + inviewport(section))
+  })
+})
+
+addEventListener('scroll', (event) => {
+  // document.getElementById("about").scrollIntoView({behavior: 'smooth'});
+  console.log("work...")
+});
