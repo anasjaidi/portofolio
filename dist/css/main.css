@@ -236,6 +236,8 @@ nav:hover span {
 }
 
 input {
+  font-size: 12px;
+  display: inline-block;
   background: transparent;
   outline: none;
   border: 0.5px solid white;
@@ -243,10 +245,8 @@ input {
   height: 32px;
   max-width: 720px;
   min-width: 180px;
-  padding: 5px 12px;
   font-weight: 100;
   letter-spacing: 4px;
-  font-size: 12px;
 }
 
 .name-form {
