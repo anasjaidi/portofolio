@@ -30,7 +30,7 @@ html(lang="en")
                         -  for (var i = 0; i < icons.length; i++)
                             - var id = '#' + labels[i]
                             - var classname = 'link-' + labels[i]
-                            a.icon(class=classname href=id)
+                            a.icon(class=classname href=id id=classname)
                                 i(class="i " + icons[i])
                                 span #{labels[i]}             
                 //- start bottom icon
@@ -38,7 +38,7 @@ html(lang="en")
                     i(class="fa-light fa-arrow-down i")
             //- start main section container
             .main
-                .home(id="home")
+                .home(id="home" class="ac section")
                     .p1
                         .text
                             p.hi HI THERE! I'M
@@ -58,7 +58,7 @@ html(lang="en")
                         .d2
                         .d3
                         img(src="./img/theme.jpeg" class="theme")
-                .about(id="about")
+                .about(id="about" class="nac section")
                     .title 
                         h2 about me
                         span robin hood
@@ -67,7 +67,7 @@ html(lang="en")
                         span some info
                     .about-text 
                         p <span class="job">I'm a front-end web developer</span> with a background in computer systems and Algorithems and data-structure . My 3 years of IT experience has given me a strong foundation for web development and building complex solutions. Recently, i joined <span class="job">42 network for senior digital it architect degree</span> . I am passionate about coding and solving problems through code, and I am excited to work alongside other amazing programmers and learn so much more!
-                .skills(id="skills")
+                .skills(id="skills" class="nac section")
                     .title 
                         h2  skills
                         span robin hood
@@ -81,7 +81,7 @@ html(lang="en")
                         .skill 
                             i(class=skillsicon[i])
                             span #{skillstext[i]}
-                .projects(id="projects")
+                .projects(id="projects" class="nac section")
                     .title 
                         h2 projects
                         span robin hood
@@ -99,7 +99,7 @@ html(lang="en")
                                 .btns
                                     a.btn-p live demo
                                     a.btn-p github repo
-                .contact(id="contact")
+                .contact(id="contact" class="nac section")
                     .title 
                         h2 conect
                         span robin hood

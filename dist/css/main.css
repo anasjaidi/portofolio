@@ -204,6 +204,7 @@ nav:hover span {
   }
 }
 .contact{
+  height: 100vh;
   --tw-bg-opacity: 1;
   background-color: rgb(34 40 49 / var(--tw-bg-opacity));
   padding: 3rem;
@@ -1432,4 +1433,16 @@ video {
   --tw-backdrop-opacity:  ;
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
+}
+* {
+  scroll-behavior: smooth;
+}
+
+.nac {
+  display: none;
+}
+
+section {
+  -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
 }

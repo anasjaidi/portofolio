@@ -44,8 +44,46 @@ document.addEventListener('scroll', () => {
     if (section === 'skills') console.log('skills in viewport: ' + inviewport(section))
   })
 })
-
-addEventListener('scroll', (event) => {
-  // document.getElementById("about").scrollIntoView({behavior: 'smooth'});
-  console.log("work...")
+const ac = document.getElementsByClassName("ac")[0];
+const home = document.getElementById('home');
+const about = document.getElementById('about');
+const skills = document.getElementById('skills');
+const projects = document.getElementById('projects');
+const contact = document.getElementById('contact');
+const lkhome = document.getElementById('link-home');
+const lkabout = document.getElementById('link-about');
+const lkskills = document.getElementById('link-skills');
+const lkprojects = document.getElementById('link-projects');
+const lkcontact = document.getElementById('link-contact');
+lkhome.addEventListener('click', () => {
+  ac.classList.add("nac")
+  ac.classList.remove("ac");
+  home.classList.add("ac");
+  home.classList.remove("nac");
+});
+lkabout.addEventListener('click', () => {
+  ac = document.getElementsByClassName("ac")[0];
+  ac.classList.add("nac")
+  ac.classList.remove("ac");
+  about.classList.add("ac");
+  about.classList.remove("nac");
+});
+lkskills.addEventListener('click', () => {
+  ac = document.getElementsByClassName("ac")[0];
+  ac.classList.add("nac")
+  ac.classList.remove("ac");
+  skills.classList.add("ac");
+  skills.classList.remove("nac");
+});
+lkprojects.addEventListener('click', () => {
+  ac.classList.add("nac")
+  ac.classList.remove("ac");
+  projects.classList.add("ac");
+  projects.classList.remove("nac");
+});
+lkcontact.addEventListener('click', () => {
+  ac.classList.add("nac")
+  ac.classList.remove("ac");
+  contact.classList.add("ac");
+  contact.classList.remove("nac");
 });
