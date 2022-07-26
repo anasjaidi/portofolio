@@ -1,0 +1,413 @@
+/*
+  * @version $Revision: 1.9.38.1.32.3 $
+  * @lastmodified $Date: 2018/04/25 09:09:44 $
+*/
+
+var DEBUG=false;
+var BLOC_DURATION=8000;
+if (!cqdyn || typeof cqdyn == 'undefined') var cqdyn="";
+
+function CheckCookie(maxValue){
+	if (DEBUG) alert("CheckCookie maxvalue : "+maxValue);
+	var displayCookieName = 'lbpAutoPopinDisplay';
+	var autoPopinDisplayCookie = getCookie(displayCookieName);
+	var pageCID = encodeURIComponent(document.location.pathname);
+	var shouldDisplayPopin = true;
+
+	if (!autoPopinDisplayCookie) {
+		shouldDisplayPopin = true;
+	}
+	else {
+		var popinDisplayedTimes = maxValue;
+		autoPopinDisplayCookie = jQuery.parseJSON(autoPopinDisplayCookie);
+		if (!autoPopinDisplayCookie[pageCID]) {
+			shouldDisplayPopin = true;
+		}
+		else {
+			nbDisplayed = autoPopinDisplayCookie[pageCID];
+			if(nbDisplayed < popinDisplayedTimes) {
+				shouldDisplayPopin = true;
+			}else{
+				shouldDisplayPopin = false;
+			}
+		}
+	}
+
+	if (DEBUG) alert("CheckCookie return : "+shouldDisplayPopin);
+
+	return shouldDisplayPopin;
+}
+
+Bloc = function() {
+	this._div;
+
+	this.concatBlocs = function(div,blocs,equipement,noPopin) {
+		var htmlData="<div id='"+div+"'>";
+		var popinData="";
+		var first = false;
+		if (blocs) {
+			$.each(blocs, function(i,item) {
+				$.ajax({
+					url: cqdyn+item.bloc,
+					async:false,
+					success: function(data) {
+						if(data!="" && data!="<p></p>" && !(data.lastIndexOf("<p></p>", 0) === 0)){
+							if((data.indexOf("autoPopin")>-1)){
+								noPopin = ""+noPopin+"";
+								if(noPopin.indexOf("false")>-1){
+									var maxDisplayed = $(data).attr("popindisplayedtimes");
+									if(CheckCookie(maxDisplayed)){
+										if (DEBUG) alert("isPopin multidata : "+data);
+										popinData = "<div style='display:none;' id='"+div+"_popin'>";
+										popinData+= data;
+	
+										var regClass = new RegExp("(textFCK)","gi");
+										popinData = popinData.replace(regClass,"textFCK popinPCC");
+																	
+										idCrea = $(popinData).attr("id");
+	
+										emplacementBloc="P";
+	
+										substr = item.pcc.split('|');						
+										idPCC = substr[0];
+										idCiblage = substr[1];
+	
+										pixImage = "https://voscomptesenligne.labanquepostale.fr/voscomptes/canalXHTML/technique/tracker/campagne-Tracker.ea?c="+idPCC+"&d="+idCiblage+"&b="+emplacementBloc+"&v="+idPCC+"_"+idCrea+"";
+										clicTrack = "https://voscomptesenligne.labanquepostale.fr/voscomptes/canalXHTML/technique/tracker/click-Tracker.ea?c="+idPCC+"&d="+idCiblage+"&b="+emplacementBloc+"&v="+idPCC+"_"+idCrea+"&u=";
+									
+										var regOnclick=new RegExp("(href=\")", "gi");
+										//popinData = popinData.replace(regOnclick,"onclick=\"return xt_click(this,'C',tc_vars.xiti_xtn2,xtpage,'N')\" href=\"");
+										if (item.id !== undefined) {
+											popinData = popinData.replace(regOnclick,"onclick=\"return clickOffre(this,'CLICK',tc_vars.xiti_xtn2,tc_vars.xiti_xtpage,'N','" + item.id + "')\" href=\"");
+										}
+										else {
+											popinData = popinData.replace(regOnclick,"onclick=\"return clickOffre(this,'CLICK',tc_vars.xiti_xtn2,tc_vars.xiti_xtpage,'N',undefined)\" href=\"");
+										}
+
+										if(idPCC!="null"){
+											var regLink=new RegExp("(href=\")", "gi");
+											popinData = popinData.replace(regLink,"class=\"traxxer\" link=\""+clicTrack+"\" href=\"");
+											popinData+='<img src="'+pixImage+'" />';	
+										}
+										popinData+= "</div>";
+									}
+								}else{
+									if (DEBUG) alert("noPopin multi");
+								}
+							}else{
+								if (DEBUG) alert("multidata : "+data);
+	
+								if(!first) { first = true; htmlData+="<div class=\"heightToFix\" id='"+div+""+i+"'>"; }
+								else { htmlData+="<div style='display:none;' class=\"heightToFix\" id='"+div+""+i+"'>"; }
+								
+								htmlData+=data;
+								htmlData+="</div>";
+								
+								var regOnclick=new RegExp("(href=\")", "gi");
+								//htmlData = htmlData.replace(regOnclick,"onclick=\"return xt_click(this,'C',tc_vars.xiti_xtn2,xtpage,'N')\" href=\"");
+								if (item.id !== undefined) {
+									htmlData = htmlData.replace(regOnclick,"onclick=\"return clickOffre(this,'CLICK',tc_vars.xiti_xtn2,tc_vars.xiti_xtpage,'N','" + item.id + "')\" href=\"");
+								}
+								else {
+									htmlData = htmlData.replace(regOnclick,"onclick=\"return clickOffre(this,'CLICK',tc_vars.xiti_xtn2,tc_vars.xiti_xtpage,'N',undefined)\" href=\"");
+								}
+							}
+						}
+					}
+				});
+			});
+		}
+		htmlData+="</div>"+popinData;
+		
+		return htmlData;
+	};
+
+	this.load = function(div,bloc,pcc,noPopin) {
+		this._div=div;
+		if (document.getElementById(this._div)) {
+			if (bloc) {
+				$.get(bloc,"",function(data) {
+					var regOnclick=new RegExp("(href=\")", "gi");
+					//data = data.replace(regOnclick,"onclick=\"return xt_click(this,'C',xtn2,xtpage,'N')\" href=\"");
+					data = data.replace(regOnclick,"onclick=\"return tc_events_8(this,'CLICK',{ 'clic_s2':xtn2, 'clic_label':xtpage, 'clic_type':'N'})\" href=\"");
+					if(data.indexOf("autoPopin")>-1){
+						if(noPopin.indexOf("false")>-1){
+							var maxDisplayed = $(data).attr("popindisplayedtimes");
+							if(CheckCookie(maxDisplayed)){
+								if (DEBUG) alert("isPopin unidata : "+data);
+								data = "<div style=\"display:none;\">"+data+"</div>";
+								var regClass = new RegExp("(textFCK)","gi");
+								data = data.replace(regClass,"textFCK popinPCC");
+								idCrea = $(data).attr("id");
+								emplacementBloc="P";
+								substr = pcc.split('|');						
+								idPCC = substr[0];
+								idCiblage = substr[1];
+								pixImage = "https://voscomptesenligne.labanquepostale.fr/voscomptes/canalXHTML/technique/tracker/campagne-Tracker.ea?c="+idPCC+"&d="+idCiblage+"&b="+emplacementBloc+"&v="+idPCC+"_"+idCrea+"";
+								clicTrack = "https://voscomptesenligne.labanquepostale.fr/voscomptes/canalXHTML/technique/tracker/click-Tracker.ea?c="+idPCC+"&d="+idCiblage+"&b="+emplacementBloc+"&v="+idPCC+"_"+idCrea+"&u=";
+								if(idPCC!="null"){
+									var regLink=new RegExp("(href=\")", "gi");
+									data = data.replace(regLink,"class=\"traxxer\" link=\""+clicTrack+"\" href=\"");
+									data+='<img src="'+pixImage+'" />';
+								}
+							}else{
+								data = "";
+							}
+						}else{
+							data = "";
+							if (DEBUG) alert("noPopin uni");
+						}
+					}else{
+						if (DEBUG) alert("noPopin unidata : "+data);
+					}
+					
+					$("#"+div).replaceWith(data);
+					
+					if(data.indexOf("autoPopin")>-1){if(noPopin.indexOf("false")>-1){openPopinBlockEdito();}}				
+				},"html");
+			}
+			else {
+				if (DEBUG) alert("Bloc '"+this._div+"' is empty");
+				$("#"+div).replaceWith("");
+			}
+		}
+		else if (top.ColonneDroite && top.ColonneDroite.document.getElementById(this._div)) {
+			$.get(bloc,"",function(data) {
+				var regOnclick=new RegExp("(href=\")", "gi");
+				//data = data.replace(regOnclick,"onclick=\"return xt_click(this,'C',xtn2,xtpage,'N')\" href=\"");
+				data = data.replace(regOnclick,"onclick=\"return (this,'CLICK',{ 'clic_s2':xtn2, 'clic_label':xtpage, 'clic_type':'N'})\" href=\"");
+				if (DEBUG) alert("noPopin : "+noPopin);
+				if(data.indexOf("autoPopin")>-1){
+					if(noPopin.indexOf("false")>-1){
+						var maxDisplayed = $(data).attr("popindisplayedtimes");
+						if(CheckCookie(maxDisplayed)){
+							if (DEBUG) alert("isPopin rightdata : "+data);
+							data = "<div style=\"display:none;\">"+data+"</div>";
+							var regClass = new RegExp("(textFCK)","gi");
+							data = data.replace(regClass,"textFCK popinPCC");
+							idCrea = $(data).attr("id");
+							emplacementBloc="P";
+							substr = pcc.split('|');						
+							idPCC = substr[0];
+							idCiblage = substr[1];
+							pixImage = "https://voscomptesenligne.labanquepostale.fr/voscomptes/canalXHTML/technique/tracker/campagne-Tracker.ea?c="+idPCC+"&d="+idCiblage+"&b="+emplacementBloc+"&v="+idPCC+"_"+idCrea+"";
+							clicTrack = "https://voscomptesenligne.labanquepostale.fr/voscomptes/canalXHTML/technique/tracker/click-Tracker.ea?c="+idPCC+"&d="+idCiblage+"&b="+emplacementBloc+"&v="+idPCC+"_"+idCrea+"&u=";
+							if(idPCC!="null"){
+								var regLink=new RegExp("(href=\")", "gi");
+								data = data.replace(regLink,"class=\"traxxer\" link=\""+clicTrack+"\" href=\"");
+								data+='<img src="'+pixImage+'" />';
+							}
+						}else{
+							data = "";
+						}
+					}else{
+						data = "";
+						if (DEBUG) alert("noPopin right");
+					}
+				}else{
+					if (DEBUG) alert("noPopin rightdata : "+data);
+				}
+			
+				top.ColonneDroite.document.getElementById(div).innerHTML=data;
+				
+				if(data.indexOf("autoPopin")>-1){if(noPopin.indexOf("false")>-1){openPopinBlockEdito();}}
+			},"html");
+		}
+		else {
+			if (DEBUG) alert("Bloc '"+this._div+"' not found anywhere");
+		}
+	};
+	
+	this.loadMulti = function(div,blocs,equipement,noPopin) {
+		this._div=div;
+		if (document.getElementById(this._div)) {
+			$("#"+this._div).replaceWith(this.concatBlocs(div,blocs,equipement,noPopin));
+		}
+		else if (top.ColonneDroite && top.ColonneDroite.document.getElementById(this._div)) {
+			top.ColonneDroite.document.getElementById(div).innerHTML=this.concatBlocs(div,blocs,equipement,noPopin);
+		}
+		else {
+			if (DEBUG) alert("Bloc '"+this._div+"' not found anywhere");
+		}
+		
+		openPopinBlockEdito();
+	}
+}
+
+function CurrentPageName() {
+  return document.location.href.substring(document.location.href.length, document.location.href.lastIndexOf('/') + 1 );
+}
+
+/**
+ * Gestion du clic sur l'offre choisie (bannière)
+ * Déclenche l'appel à l'acceptation de l'offre Interact si le bloc est géré par Interact
+ * Si le bloc n'est pas géré par Interact, on appelle juste la fonction xt_click initiale
+ * @param element
+ * @param param_xt_1
+ * @param param_xt_2
+ * @param param_xt_3
+ * @param param_xt_4
+ * @param idOffre
+ * @return
+ */
+function clickOffre(element, param_xt_1, param_xt_2, param_xt_3, param_xt_4, idOffre) {
+	// Si on a un ID Offre Interact
+	if (idOffre !== undefined) {
+		$.ajax({
+			type: "POST",
+			url: urlServiceInteract + "?idOffre=" + idOffre,
+			async:false
+		});
+	}
+	
+	// Appel fonction classique CQ
+	//return xt_click(element, param_xt_1, param_xt_2, param_xt_3, param_xt_4);
+	return tc_events_8(element,param_xt_1,{ 'clic_s2':param_xt_2, 'clic_label':param_xt_3, 'clic_type':param_xt_4});
+}
+
+/**
+ * Alternance des offres (toutes les x secondes)
+ * @param div
+ * @return
+ */
+function tourniquet(div) {
+	nextOn=false;
+	$("#"+div).children().each(
+		function(){
+			if( $(this).is(':visible') ) {
+				$(this).toggle();
+				nextOn=true;
+			}
+			else if (nextOn) {
+				$(this).toggle();
+				nextOn=false;
+			}
+		}
+	);
+	if (nextOn) {
+		$("#"+div).children(":first").toggle();
+	}
+}
+
+function changeHaut() {
+	tourniquet("persohaut");
+	window.setTimeout('changeHaut();',BLOC_DURATION);
+}
+function changeBas() {
+	tourniquet("persobas");
+	window.setTimeout('changeBas();',BLOC_DURATION);
+}
+function changeDroite() {
+	tourniquet("persodroite");
+	window.setTimeout('changeDroite();',BLOC_DURATION);
+}
+
+/**
+ * Fonction déclenchée toutes les x secondes, pour changer
+ * l'offre affichée dans le bloc spécifié 
+ * @param id
+ * @return
+ */
+function changeBanniere(id) {
+	tourniquet(id);
+	window.setTimeout(function() {
+		changeBanniere(id);
+	}, BLOC_DURATION);
+}
+
+/**
+ * Déclenchement du défilement des offres publicitaires
+ * @param item
+ * @return
+ */
+function loadCompteur(item) {
+	//if (item.div=="persohaut") window.setTimeout('changeHaut();',BLOC_DURATION);
+	//if (item.div=="persobas") window.setTimeout('changeBas();',BLOC_DURATION);
+	//if (item.div=="persodroite") window.setTimeout('changeDroite();',BLOC_DURATION);
+	
+	window.setTimeout(function() {
+		changeBanniere(item.div);
+	}, BLOC_DURATION);
+}
+
+/**
+ * Fixe la hauteur des offres publicitaires profilées
+ * @return
+ */
+function heightFixer(){
+	$(".heightToFix").each(function(){
+		$(this).parent().addClass("profileBlocHeightFixer");
+	});
+}
+
+/**
+ * Appel au flux campagne, qui appellera ensuite le visuel CQ
+ * @param url
+ * @param equipement
+ */
+function loadFluxCampagne(url, equipement) {
+	var ajaxBloc=[];
+	if (DEBUG) alert("Chargement "+url);
+	$.getJSON(url, function(data) {
+		if (DEBUG) alert("Rule loaded");
+		if (data != null)
+		$.each(data.blocs, function(i,item) {
+			ajaxBloc[i] = new Bloc();
+			if (item.banieres) {
+				ajaxBloc[i].loadMulti(item.div,item.banieres,equipement,""+data.nopopin+"");
+				loadCompteur(item);
+			}
+			else ajaxBloc[i].load(item.div,cqdyn+item.bloc,item.pcc,""+data.nopopin+"");
+		});
+	});
+	
+	$(".traxxer").each(function(){
+		var urlCible = $(this).attr("href");
+		var urlTraxxer = $(this).attr("link");
+		$(this).attr("href", urlTraxxer+urlCible);
+		$(this).removeClass("traxxer");
+		$(this).removeAttr("link");
+	});
+}
+
+/**
+ * Chargement des blocs profilés CQ
+ * @param equipement
+ */
+function loadBlocsProfiles(equipement) {
+	var URLrules=cqdyn+"etc/rules.Evaluate.txt?"+equipement;
+	
+	if(equipement.indexOf("PAGE=synthese_haut")>-1){
+		equipement = "synthese";
+	}
+	
+	loadFluxCampagne(URLrules, equipement);
+}
+
+/**
+ * Chargement des blocs profilés Interact
+ * Fonction permettant de :
+ *   - récupérer les URL Interact à appeler
+ *   - faire les appels à l'activité REST
+ *   - faire appel au module de chargement des visuels
+ */
+function loadBlocsInteract() {
+	// Pour chacun des blocs Interact contenant les URL à appeler
+	$(".urlInteract").each(function() {
+		// Appel au flux campagne (activité REST (qui se charge de l'appel à Interact))
+		loadFluxCampagne($(this).text(), null);
+	});
+}
+
+
+// Une fois les appels Ajax terminés, la hauteur des offres publicitaires est ajustée
+$(document).bind("ajaxComplete", function(){
+	heightFixer();
+});
+
+
+// Une fois le document chargé
+$(document).ready(function(){
+	// Appel Interact
+	loadBlocsInteract();
+});

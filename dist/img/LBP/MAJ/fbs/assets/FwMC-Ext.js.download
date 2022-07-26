@@ -1,0 +1,48 @@
+var Lightbox={$version:navigator.appVersion.indexOf("MSIE")!=-1?parseFloat(navigator.appVersion.split("MSIE")[1]):10,toggle:function(b,d,c){var a=b.style;
+if(d){a.display="block";
+a.visibility="visible"
+}else{a.display="none";
+a.visibility="hidden"
+}if(c!=null){a.zIndex=c
+}},getMask:function(){var a=document.getElementById("fwmc_mask");
+if(!a){a=document.createElement("div");
+a.setAttribute("id","fwmc_mask");
+var c=a.style;
+c.position="absolute";
+c.top=c.left=c.padding=c.margin=0;
+c.width=screen.availWidth+"px";
+c.height=screen.availHeight+"px";
+if(Lightbox.$version<8){var b=document.createElement("iframe");
+c=b.style;
+c.border="0px";
+c.width=c.height="5000px";
+c.filter="alpha(opacity=0)";
+b.src="javascript:false;";
+a.appendChild(b)
+}this.toggle(a,false,-1);
+document.body.appendChild(a)
+}return a
+},getWindowSize:function(){var a=0;
+var b=0;
+if(!window.innerWidth){if(!(document.documentElement.clientWidth==0)){a=document.documentElement.clientWidth;
+b=document.documentElement.clientHeight
+}else{a=document.body.clientWidth;
+b=document.body.clientHeight
+}}else{a=window.innerWidth;
+b=window.innerHeight
+}return{width:a,height:b}
+},open:function(f){var c=document.getElementsByTagName("html")[0];
+var e=document.getElementById(f);
+var a=this.getMask();
+this.toggle(a,true,100);
+this.toggle(e,true,200);
+window.scroll(0,0);
+var d=e.style;
+var b=this.getWindowSize();
+if(!d.left){d.left=Math.max(Math.floor((parseInt(b.width)-parseInt(e.offsetWidth))/2),0)+"px"
+}if(!d.top){d.top=Math.max(Math.floor((parseInt(b.height)-parseInt(e.offsetHeight))/2),0)+"px"
+}},close:function(b){var a=document.getElementsByTagName("html")[0];
+document.body.style.overflow=a.style.overflow="auto";
+this.toggle(document.getElementById(b),false,-1);
+this.toggle(this.getMask(),false,-1)
+}};

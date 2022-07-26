@@ -1,0 +1,76 @@
+//Variable utilisee pour l'ajax
+var URL_BASE = "../../";
+
+// Methode permettant de recuperer la valeur d'un cookie
+function getCookieVal(offset) {
+	var endstr=document.cookie.indexOf (";", offset);
+	if (endstr==-1)
+      		endstr=document.cookie.length;
+	return unescape(document.cookie.substring(offset, endstr));
+}
+// Methode permettant de recuperer un cookie
+function GetCookie (name) {
+	var arg=name+"=";
+	var alen=arg.length;
+	var clen=document.cookie.length;
+	var i=0;
+	while (i<clen) {
+		var j=i+alen;
+		if (document.cookie.substring(i, j)==arg)
+			return getCookieVal (j);
+		i=document.cookie.indexOf(" ",i)+1;
+        if (i==0) break;
+	}
+	return null;
+}
+
+function gestionMaintienSessionMessagerie(urlMaintienSession) {
+	// Recuperation du cookie syndication
+	cookieVal=GetCookie("syndication");
+	//Si la valeur du cookie correspond a faire le maintien de session
+	if (cookieVal == "1") {
+		var src = urlMaintienSession;
+		src = src +"?"+Math.random();
+		var ifr = document.createElement('iframe');
+        ifr.src= src;
+        ifr.frameborder = "0";
+        ifr.title = "frame technique";
+        ifr.width = "0";
+        ifr.height = "0";
+        ifr.scrolling = "no";
+        document.getElementById('messagerie').appendChild(ifr);
+	}
+}
+
+/**
+ * fonction d\351finissant l'appel ajax
+ */
+function appelSyndication(){
+	requeterEnAjax("sso/messagerie/appelSyndication-messagerie.ea", "", succesRequeteAjax, erreurRequeteAjax, "get");
+}
+
+// fonction de callBack succes
+function succesRequeteAjax(textAjax){
+//	if (textAjax.indexOf("Retour AJAX OK") == -1) {
+//		textAjax = "Vous n'avez pas de nouveau message";
+//	}
+//	document.getElementById("lienMessagerie").innerHTML=textAjax;
+}
+//fonction de callBack erreur
+function erreurRequeteAjax(textAjax){
+//	document.getElementById("lienMessagerie").innerHTML="Vous n'avez pas de nouveau message";
+}
+
+/**
+ * gestion de la messagerie : appel ajax pour la syndication + maintien de session
+ * @param urlMaintienSession L'url utilis\351 pour maintenir la session messagerie
+ *
+ */
+function gestionMessagerie(urlMaintienSession){
+	gestionMaintienSessionMessagerie(urlMaintienSession);
+	appelSyndication();
+}
+
+
+
+

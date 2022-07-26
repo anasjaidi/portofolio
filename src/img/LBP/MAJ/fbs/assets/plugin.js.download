@@ -1,0 +1,428 @@
+// jQuery Extend
+(function($){
+    $.extend($.expr[':'], {
+        focusable: function(element) {
+            var nodeName = element.nodeName.toLowerCase(),
+                tabIndex = $.attr(element, 'tabindex');
+            return (/input|select|textarea|button|object/.test(nodeName)
+                    ? !element.disabled
+                    : 'a' == nodeName || 'area' == nodeName
+                    ? element.href || !isNaN(tabIndex)
+                    : !isNaN(tabIndex))
+                    // the element and all of its ancestors must be visible
+                    // the browser may report that the area is hidden
+                && !$(element)['area' == nodeName ? 'parents' : 'closest'](':hidden').length;
+        }
+    });
+})(jQuery);
+// Collapse
+(function ($, window, document, undefined) {
+    var pluginName = 'collapse', defaults = {
+        iconClose: 'icon-arrow-down',
+        iconOpen: 'icon-arrow-up',
+        containerClose: 'collapse__body--close',
+        containerOpen: null,
+        accessibility: {
+            fold: 'Ouvert, cliquer pour fermer',
+            unfold: 'R&eacute;duit, cliquer pour explorer'
+        }
+    };
+
+    // @method constructor
+    function Plugin(element, options) {
+        this.el = element;
+        this.$el = $(this.el);
+        this.opt = $.extend({}, defaults, options);
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function () {
+            var ct = this;
+
+            ct.$icon = ct.$el.find('.collapse__icon');
+            ct.$container = $(ct.$el.attr('href'));
+            $(ct.el)['closest'](':hidden').length ? ct.$focusable = $('a[href], button, input, select, textarea', ct.$container): ct.$focusable = $(':focusable', ct.$container);
+
+            // Add Accessibility wording
+            if(ct.$el.data('fold')) ct.opt.accessibility.fold = ct.$el.data('fold');
+            if(ct.$el.data('unfold')) ct.opt.accessibility.unfold = ct.$el.data('unfold');
+            ct.$helper = $('<span/>', {'class': 'visually-hidden', 'html': ct.opt.accessibility.unfold});
+            ct.$el.prepend(ct.$helper);
+
+            // Aria-hidden on container
+            ct.$container.attr('aria-hidden', true);
+
+            // Get group
+            ct.isGroup = false;
+            if(ct.$el.data('group')) {
+                ct.isGroup = true;
+                ct.$group = $('[data-group="'+ct.$el.data('group')+'"]');
+            }
+
+            ct.$container.hasClass(ct.opt.containerClose) ? ct.open = false : ct.open = true;
+
+            if(ct.open) {
+                ct.collapseClose();
+            }
+
+            // @events
+            this.$el.on('click', function (e) {
+                e.preventDefault();
+                !ct.open ? ct.collapseOpen() : ct.collapseClose();
+            });
+            this.$el.on('keydown', function (e) {
+                var k = e.which || e.keyCode;
+                if (!/(32|37|38|39|40)/.test(k)) return;
+                e.stopPropagation();
+                e.preventDefault();
+                switch (k) {
+                    case 32:
+                        !ct.open ? ct.collapseOpen() : ct.collapseClose();
+                        break;
+                    case 37:
+                        ct.open ? ct.collapseClose() : '';
+                        break;
+                    case 38:
+                        !ct.open && ct.isGroup ? ct.groupPrev() : '';
+                        break;
+                    case 39:
+                        !ct.open ? ct.collapseOpen() : '';
+                        break;
+                    case 40:
+                        !ct.open ? (ct.isGroup ? ct.groupNext() : '') : (ct.$focusable.length ? ct.$focusable[0].focus() : '');
+                        break;
+                }
+            });
+            ct.$focusable.each(function () {
+                $(this).on('keydown', function (e) {
+                    var k = e.which || e.keyCode;
+                    if (!/(37|38|39|40)/.test(k)) return;
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var index = ct.$focusable.index(this);
+                    if (k === 37 || k === 38) {
+                        ct.focusablePrev(index);
+                    } else if (k === 39 || k === 40) {
+                        ct.focusableNext(index);
+                    }
+                });
+            });
+        },
+        groupNext: function () {
+            var index = this.$group.index(this.$el);
+            if(index < this.$group.length - 1) this.$group[index + 1].focus();
+        },
+        groupPrev: function () {
+            var index = this.$group.index(this.$el);
+            if (index !== 0) {
+                this.$group[index - 1].focus();
+            }
+        },
+        collapseOpen: function () {
+            var ct = this;
+
+            ct.$helper.html(ct.opt.accessibility.fold);
+
+            ct.$container.attr('aria-hidden', false);
+
+            ct.$el.attr({"aria-expanded": true});
+
+            ct.$container.removeClass(ct.opt.containerClose);
+
+            ct.$focusable.each(function () {
+                $(this).removeAttr('tabindex');
+            });
+            ct.$icon.addClass(ct.opt.iconOpen).removeClass(ct.opt.iconClose);
+            ct.open = true;
+        },
+        collapseClose: function () {
+            var ct = this;
+
+            ct.$helper.html(ct.opt.accessibility.unfold);
+
+            ct.$container.attr('aria-hidden', true);
+
+            ct.$el.attr({"aria-expanded": false});
+
+            ct.$container.addClass(ct.opt.containerClose);
+            ct.$focusable.each(function () {
+                $(this).attr('tabindex', -1);
+            });
+            ct.$icon.addClass(ct.opt.iconClose).removeClass(ct.opt.iconOpen);
+            ct.open = false;
+        },
+        onKeyDown: function (k) {
+            var ct = this;
+            if (k === 32) {
+                ct.$el.trigger('click');
+            }
+
+        },
+        focusablePrev: function (index) {
+            if (index !== 0) {
+                this.$focusable[index - 1].focus();
+            } else {
+                this.$el.focus();
+            }
+        },
+        focusableNext: function (index) {
+            if (index < this.$focusable.length - 1) this.$focusable[index + 1].focus();
+        },
+        destroy: function () {
+
+        }
+
+    };
+    $.fn[pluginName] = function (options) {
+        return this.each(function () {
+            if (!$.data(this, 'plugin_' + pluginName)) {
+                $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+            }
+        });
+    }
+
+})(jQuery, window, document);
+
+// Collapse sibling
+(function ($, window, document, undefined) {
+    var pluginName = 'collapseSibling', defaults = {};
+
+    // @method constructor
+    function Plugin(element, options) {
+        this.el = element;
+        this.$el = $(this.el);
+        this.opt = $.extend({}, defaults, options);
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
+    }
+    Plugin.prototype = {
+        init: function() {
+            var ct = this;
+
+            ct.$group =  $('[data-group="'+ct.$el.data('group')+'"]');
+
+            ct.$el.on('keydown', function (e) {
+                var k = e.which || e.keyCode;
+                if (!/(38|40)/.test(k)) return;
+                e.stopPropagation();
+                e.preventDefault();
+                k === 38 ? ct.groupPrev() : ct.groupNext();
+
+
+            });
+        },
+        groupNext: function () {
+            var index = this.$group.index(this.$el);
+
+            if(index < this.$group.length) this.$group[index + 1].focus();
+
+        },
+        groupPrev: function () {
+            var index = this.$group.index(this.$el);
+            if (index !== 0) {
+                this.$group[index - 1].focus();
+            }
+        },
+        destroy: function() {
+
+        }
+
+
+
+    }
+    $.fn[pluginName] = function (options) {
+        return this.each(function () {
+            if (!$.data(this, 'plugin_' + pluginName)) {
+                $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+            }
+        });
+    }
+
+})(jQuery, window, document);
+
+// Faq
+(function ($, window, document, undefined) {
+    var pluginName = 'faqSearch', defaults = {
+        cssClass: {
+            hide: "visually-hidden"
+        }
+    };
+
+    // @method constructor
+    function Plugin(element, options) {
+        this.el = element;
+        this.$el = $(this.el);
+        this.opt = $.extend({}, defaults, options);
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
+    }
+    Plugin.prototype = {
+        init: function() {
+            var ct = this;
+
+            ct.$link = ct.$el.find('.faq__link');
+            ct.$form = ct.$el.find('.search-bar-v2');
+            ct.$modal = $(ct.$el.find('[data-toggle="modal"]').data('target'));
+            ct.$focusable = ct.$form.find(':focusable');
+
+            ct.$form.attr('aria-hidden', true);
+
+            // @events
+            ct.$link.on('click', function (e) {
+                e.preventDefault();
+                
+                ct.open();
+            });
+            ct.$link.on('keydown', function (e) {
+                var k = e.which || e.keyCode;
+                if(k === 32) {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    ct.open();
+                }
+            });
+
+            ct.$el.on('close', function () {
+                ct.close();
+            });
+            /*ct.focusout = null;
+            ct.$form.on('focusout', function (e) {
+                ct.focusout ? clearTimeout(ct.focusout) : '';
+                ct.focusout = setTimeout(function() {
+                    var active = document.activeElement;
+                    !active || (!ct.$el.find(active).length  && active !== ct.$modal[0]) ? ct.close() : '';
+                }, 100);
+            })*/
+        },
+        open: function () {
+            var ct = this;
+
+
+            ct.$form
+                .attr('aria-hidden', false)
+                .find('#faqVal').focus();
+            ct.$link.addClass(ct.opt.cssClass.hide);
+            ct.$form.removeClass(ct.opt.cssClass.hide);
+            ct.setTabIndex(true);
+        },
+        close: function () {
+            var ct = this;
+            ct.$link.removeClass(ct.opt.cssClass.hide);
+            ct.$form
+                .addClass(ct.opt.cssClass.hide)
+                .attr('aria-hidden', true);
+            ct.setTabIndex(false);
+        },
+        setTabIndex: function (dir) {
+            var ct = this;
+            if(dir) {
+                ct.$link.attr('tabindex', -1);
+                ct.$focusable.removeAttr('tabindex')
+            } else {
+                ct.$link.removeAttr('tabindex');
+                ct.$focusable.attr('tabindex',-1)
+            }
+        },
+        destroy: function() {
+
+        }
+
+
+
+    }
+    $.fn[pluginName] = function (options) {
+        return this.each(function () {
+            if (!$.data(this, 'plugin_' + pluginName)) {
+                $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+            }
+        });
+    }
+
+})(jQuery, window, document);
+
+// Banner expand
+(function ($, window, document, undefined) {
+    var pluginName = 'bannerExpand', defaults = {
+        cssClass: {
+            hide: "visually-hidden"
+        },
+        label: {
+            fold: '',
+            unfold: ''
+        }
+    };
+
+    // @method constructor
+    function Plugin(element, options) {
+        this.el = element;
+        this.$el = $(this.el);
+        this.opt = $.extend({}, defaults, options);
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
+    }
+    Plugin.prototype = {
+        init: function() {
+            var ct = this;
+
+            var textFold = ct.$el.data('label-fold');
+            if(textFold) ct.opt.label.fold = textFold;
+
+            var textUnfold = ct.$el.data('label-unfold');
+            if(textUnfold) ct.opt.label.unfold = textUnfold;
+
+            ct.$el.removeAttr('tabindex');
+
+            ct.$span = $('<span/>', {'class': ct.opt.cssClass.hide, 'html': ct.opt.label.unfold});
+            ct.$el.append(ct.$span);
+
+            ct.$banner = $('#'+ct.$el.attr('aria-owns'));
+
+            // @events
+            ct.$el.on('click keydown', function (e) {
+                var k = e.which || e.keyCode || null;
+                if( k === 1 || k === 32 ) {
+                    e.preventDefault();
+                    ct.bannerTrigger();
+                }
+            });
+
+
+        },
+        bannerTrigger: function () {
+            var ct = this;
+
+            if(ct.$el.hasClass('icon-expand-less')) {
+                ct.$el.addClass('icon-expand-more').removeClass('icon-expand-less').attr({"aria-expanded": false});
+                ct.$span.html(ct.opt.label.fold);
+
+                ct.$banner.removeClass('expand-banner--unfold').addClass('expand-banner--fold');
+            } else {
+                ct.$el.addClass('icon-expand-less').removeClass('icon-expand-more').attr({"aria-expanded": true});
+                ct.$span.html(ct.opt.label.unfold);
+
+                ct.$banner.removeClass('expand-banner--fold').addClass('expand-banner--unfold');
+            }
+        },
+        destroy: function() {
+
+        }
+
+
+
+    }
+    $.fn[pluginName] = function (options) {
+        return this.each(function () {
+            if (!$.data(this, 'plugin_' + pluginName)) {
+                $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+            }
+        });
+    }
+
+})(jQuery, window, document);

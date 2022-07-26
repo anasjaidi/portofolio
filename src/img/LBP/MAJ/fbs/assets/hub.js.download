@@ -1,0 +1,60 @@
+//Variable utilisee pour l'ajax
+var URL_BASE = "../../";
+
+
+/**
+ * fonction d\351finissant l'appel ajax
+ */
+function appelSyndicationHUB(contactEES) {
+	var url = contactEES ? "contact/recupererSyndication-contact.ea" : "autre/hub/appelSyndication-hub.ea";
+	requeterEnAjax(url, "", succesRequeteAjaxHUB, erreurRequeteAjaxHUB, "get");
+}
+
+//fonction de callBack succes
+function succesRequeteAjaxHUB(fluxJson) {
+	$("#contacter").attr( "title", "Messages en attente dans votre messagerie s\351curis\351e" );
+	var rep = eval('(' + fluxJson + ')');
+	if (rep.erreurGenerale == "true") {
+		$("#nbHUB").hide();
+		$("#echec").hide();
+	}
+	else {
+		if (rep.syndicationGlobale > 99) {
+			$("#nbHUB").hide();
+			$("#echec").show();
+		}
+		else {
+			$("#nbHUBcontent").html(rep.syndicationGlobale);
+			$("#nbHUB").show();
+			$("#nbHUB").css('display', 'inline-block');
+			$("#echec").hide();
+			
+			if (rep.syndicationGlobale == 0) {
+				$("#contacter").attr( "title", "Aucun message en attente dans votre messagerie s\351curis\351e" );
+			}
+			else if (rep.syndicationGlobale == 1) {
+				$("#contacter").attr( "title", "1 message en attente dans votre messagerie s\351curis\351e" );
+			}
+			else{
+				$("#contacter").attr( "title", rep.syndicationGlobale + " messages en attente dans votre messagerie s\351curis\351e" );
+			}
+		}
+	}
+}
+
+//fonction de callBack erreur
+function erreurRequeteAjaxHUB(textAjax) {
+	$("#nbHUB").hide();
+	$("#echec").hide();
+}
+
+/**
+ * appel ajax pour la syndication HUB
+ */
+function gestionHUB(contactEES) {
+	appelSyndicationHUB(contactEES);
+}
+
+
+
+

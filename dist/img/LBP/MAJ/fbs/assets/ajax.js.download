@@ -1,0 +1,93 @@
+/*
+ * Script a utiliser pour requeter en ajax sur l'application
+ * Necessite :
+ * - la definition de la variable URL_BASE
+ * - la definition de la variable ERREUR_CAUSE_TIME_OUT
+ */
+
+
+/**
+ * Renvoi le composant AJAX du navigateur
+ */
+function getRequester()
+{
+    if (window.XMLHttpRequest)
+        return new XMLHttpRequest();
+ 
+    if (window.ActiveXObject)
+    {
+        var names = [
+            "Msxml2.XMLHTTP.6.0",
+            "Msxml2.XMLHTTP.3.0",
+            "Msxml2.XMLHTTP",
+            "Microsoft.XMLHTTP"
+        ];
+        for(var i in names)
+        {
+            try{ return new ActiveXObject(names[i]); }
+            catch(e){}
+        }
+    }
+    return null; // non support\351
+}
+
+
+/**
+ * Methode generique de dialogue AJAX
+ * @param url L'url a laquelle acceder
+ * @param data Les parametres a envoyer, sous la forme d'une chaine en get ('?name=value&name2=value2 ...')
+ * @param callbackSuccess Fonction javascript a appeler lorsque tout se passe bien. Le callback prend un argument qui
+ * 	est la reponse ajax sous forme textuelle
+ * @param callbackFailure Fonction javascript a appeler lorsqu'une erreur ajax survient. Le callback prend un argument
+ * 	qui est l'erreur http recue
+ * @param typeAppel : post ou get (facultatif post par defaut)
+ */
+function requeterEnAjax(url, data, callbackSuccess, callbackFailure, typeAppel){
+    if (typeof typeAppel === 'undefined') { // si le parm n'est pas defini, on lui affecte une valeur par defaut.
+    	typeAppel = 'post';
+    }
+    
+	var targetAjax = URL_BASE + url;
+	var ajax = getRequester();
+	ajax.onreadystatechange=function() {
+		if (4 == ajax.readyState) {
+			if (ajax.status >= 200 && ajax.status < 300) {
+				callbackSuccess.call(null, ajax.responseText);
+		    }
+	   		else {
+	   			callbackFailure.call(null, ajax.status);
+	   		}
+		}
+	}
+	
+	// Lancement de la requete ajax
+	ajax.open(typeAppel, targetAjax, true);
+	ajax.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+	if(url.indexOf("getTopPretExpressGerer-gerer.ea") > -1) {
+		ajax.setRequestHeader('Access-Control-Allow-Origin','TRUE');
+	}
+	ajax.send(data);
+}
+
+/*
+ * Extrait un objet d'un flux JSON
+ * Workaround car je ne parvient pas a recuperer 
+ * directment une reponse JSON aevc prototype
+ */
+function jsonToObject(json) {
+	var chaine = "(" + json + ")";
+	return eval(chaine);
+}
+
+/**
+ * Factory d'un bean json d'erreur
+ */
+function preparerErreurAjax(ajaxStatus){
+	// On cree un bean ajax d'erreur comme si on avait eu
+	// un timeout
+	var dataBean = new Object();
+	dataBean.type = TYPE_ERREUR;
+	dataBean.cause = ERREUR_CAUSE_TIME_OUT;
+	dataBean.message = "Erreur HTTP : " + ajaxStatus;
+	return dataBean;
+}

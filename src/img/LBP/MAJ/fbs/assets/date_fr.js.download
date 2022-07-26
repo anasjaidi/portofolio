@@ -1,0 +1,24 @@
+/*
+  * @version $Revision: 1.1 $
+  * @lastmodified $Date: 2018/01/12 10:43:18 $
+*/
+
+/*!
+ * Date prototype extensions. Doesn't depend on any
+ * other code. Doens't overwrite existing methods.
+ *
+ * Adds dayNames, abbrDayNames, monthNames and abbrMonthNames static properties and isLeapYear,
+ * isWeekend, isWeekDay, getDaysInMonth, getDayName, getMonthName, getDayOfYear, getWeekOfYear,
+ * setDayOfYear, addYears, addMonths, addDays, addHours, addMinutes, addSeconds methods
+ *
+ * v1.0 Copyright (c) 2006 J?rn Zaefferer and Brandon Aaron (brandon.aaron@gmail.com || http://brandonaaron.net)
+ *
+ * Additional methods and properties added by Kelvin Luck: firstDayOfWeek, dateFormat, zeroTime, asString, fromString -
+ * I've added my name to these methods so you know who to blame if they are broken!
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ */
+;Date.dayNames=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];Date.abbrDayNames=["dim.","lun.","mar.","mer.","jeu.","ven.","sam."];Date.monthNames=["Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre"];Date.abbrMonthNames=["janv.","f&eacute;vr.","mars","avr.","mai","juin","juil.","ao&ucirc;t","sept.","oct.","nov.","d&eacute;c."];

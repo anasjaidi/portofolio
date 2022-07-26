@@ -1,0 +1,101 @@
+$(document).ready(function(){
+	//Supprimer les headers actifs
+	$("#menu.header__nav").find("li").each( function(elmt){
+		$(this).find("a").removeClass("active");
+	});
+	
+	//repositionner le header actif
+	var headerSelectionne = $("#menuSelectionne").val();
+	$("#" + headerSelectionne).addClass("active");
+	
+	//Fonctions d'accessbilité - menu caché + focus sur la croix de fermeture du bandeau
+	var effectuerFermeture = true;
+	if(typeof cookieNameBandeau == 'undefined' || typeof cookieDomainBandeau == 'undefined' || typeof cookiePathBandeau == 'undefined'){
+		effectuerFermeture = false;
+		cookieNameBandeau = "";
+		cookieDomainBandeau = "";
+		cookiePathBandeau = "";
+	}
+	$("#bandeauInfosConnexion").on("click",appelFermetureBandeau(cookieNameBandeau,cookieDomainBandeau,cookiePathBandeau,effectuerFermeture));
+	$("#accesMenuProfil").on("click",clicAccesMenuProfil);
+	
+	/**
+	 * Code pour l'accessibilité
+	 * permettant lors du focus sur un lien du menu caché de l'afficher
+	 */
+	var classeInvisibilite = $('#menuAccessibilite').attr('data-access-helper');  
+	
+	//Afficher le menu caché quand on arrive dessus et focus le premier lien
+	$("#menuAccessibilite a").on('focus', function(e){
+		if( $('#menuAccessibilite').hasClass(classeInvisibilite)){
+			$('#menuAccessibilite').removeClass(classeInvisibilite);
+		}
+	});
+	//Remettre le menu caché invisible
+	$("#menuAccessibilite a").on('blur', function(e){
+    	$('#menuAccessibilite').addClass(classeInvisibilite);
+	});
+    //Lors de l'appui sur Entrée sur un menu caché, envoie vers le menu correspondant
+	$('#menuAccessibilite').on('keydown.access', 'a', function(e) {
+		if (e.keyCode === 13) {
+			var target = $(this).attr("href");
+			if (target.indexOf('#') !== -1) {
+				e.preventDefault();
+				$(target).find('a:visible').first().focus();
+			}
+		}
+	});
+});
+
+/**
+ * Modification du cookie pour indiquer la fermeture du bandeau
+ * @param nomCookie
+ * @param domaineCookie
+ * @param cheminCookie
+ */
+function appelFermetureBandeau(nomCookie, domaineCookie, cheminCookie, effectuerFermeture){
+	return function() {
+		$('#menuPrincipalNavigation').find('a:visible').last().focus();
+		if(effectuerFermeture){
+			document.cookie = nomCookie + "=false;" + ";domain=" + domaineCookie + ";path=" + cheminCookie;
+		}
+	};
+}
+
+/**
+ * Permet lors du clic sur ce lien d'aller directement sur le menu Mon Profil et de l'ouvrir
+ */
+function clicAccesMenuProfil(){
+	$('.dropdown-trigger').click();
+	$('.dropdown-trigger').focus();
+}
+
+window.addEventListener('message', receiveMessage, false);
+function receiveMessage(evt) {
+
+    if (evt.data === 'cacher_sous_menu_carte_bancaire') {
+        // cacher sous menu carte bancaire
+        $('#menuDiv').hide();
+    }
+    if (evt.data === 'title_programme_cashback') {
+        // renomme le titre de la page
+        window.parent.document.title = 'La Banque Postale - Programme Cashback Visa';
+    }
+    if (evt.data === 'cartes_bancaires_plafonds') {
+         window.parent.document.title = 'La Banque Postale - Modification de Plafond';
+    }
+    if (evt.data === 'cartes_bancaires_cartes') {
+        window.parent.document.title = 'La Banque Postale - Perso Carte';
+    }
+    if (evt.data === 'cartes_bancaires_acquittement') {
+        window.parent.document.title = 'La Banque Postale - Confirmation';
+    }
+    if (evt.data === 'cartes_bancaires_certicode') {
+        window.parent.document.title = 'La Banque Postale - V\u00e9rification';
+    }
+    if (evt.data === 'western_union_ok') {
+	//Gestion d'affichage menu, sous menu WU
+	$('#menuDiv').show();
+    }
+
+}

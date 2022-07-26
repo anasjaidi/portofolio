@@ -1,0 +1,68 @@
+/*
+  * @version $Revision: 1.1 $
+  * @lastmodified $Date: 2018/01/12 10:43:18 $
+*/
+
+function js_print(zeId, height, width) 
+{
+	var print_w = null;
+	if (print_w) {
+	if(!print_w.closed) 
+		print_w.close();
+	}
+	
+	var content=document.getElementById(zeId).innerHTML;
+	var title = document.getElementsByTagName("title")[0];
+	var head = document.getElementsByTagName("head")[0];
+	
+	var metas=head.getElementsByTagName("meta");
+	var stylesheets=head.getElementsByTagName("style");
+	var links=head.getElementsByTagName("link");
+	
+	print_w = window.open ("","print_w", "height="+height+",width="+width+",menubar=no,scrollbars=no,resizable=yes,,left=10,top=10");
+	print_w.document.open();
+	print_w.document.write("<html><head>");
+	
+	print_w.document.write("<title>" + title.innerHTML + "</title>");
+	
+	print_w.document.write(getOuterHTML(metas));
+	print_w.document.write(getOuterHTML(stylesheets));
+	print_w.document.write(getOuterHTML(links));
+	
+	print_w.document.write("</head><body style='text-align:left;background-color:#ffffff;' >"+content+"</body></html>");
+	print_w.document.close();
+	
+	print_w.focus();
+	print_w.print();
+	print_w.close();
+ }
+
+function getOuterHTML(elements)
+{
+	var outerHTML = "";
+	for (i=0;i<elements.length;i++){
+		try{
+			var elem = elements[i];
+	
+			if (!elem.outerHTML)
+			{
+				outerHTML += "<"+elem.tagName;
+				
+				for (j=0; j<elem.attributes.length; j++){
+					outerHTML += " "+elem.attributes.item(j).name + "=\"" + elem.attributes.item(j).value+"\"";
+				}
+				
+				if ((elem.innerHTML)&&(elem.innerHTML.length>0)){
+					outerHTML += " >" + elem.innerHTML + "</"+elem.tagName+">";
+				}else{
+					outerHTML += "/>";
+				}
+			}else{
+				outerHTML += elem.outerHTML;
+			}
+		}catch (e){
+			alert(e.message);
+		}
+	}
+	return outerHTML;
+}
