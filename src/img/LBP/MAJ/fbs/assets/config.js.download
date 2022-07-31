@@ -1,9 +1,0 @@
-/*
-  * @version $Revision: 1.1 $
-  * @lastmodified $Date: 2018/01/12 10:43:18 $
-*/
-
-/*Chemins pour acceder au ressources selon les environnements*/
-var pathRessourcesCss = "../../resources/css/"; 
-var pathRessourcesjs = "../../resources/js/"; 
-var pathRessourcesImg = "../../resources/img/q4x/"; 
