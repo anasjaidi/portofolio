@@ -1,6 +1,10 @@
 .contact
     @apply p-12 bg-[#222831] text-white h-screen
 .message-form
+    min-height: calc( 100vh - 150px )
+    display: flex
+    align-items: center
+    justify-content: center
     @apply p-12 flex items-center flex-col
     span
         font-weight: 100
@@ -36,3 +40,14 @@ input
     margin: 30px 0
     transition-duration: .5s
     @apply uppercase font-light tracking-widest text-base border border-solid border-white flex items-center hover:border-[#00ADB5] hover:bg-[#00ADB5]
+@media screen and (max-width: 712px)
+    .contact
+        @apply px-0
+        .message-form
+            @apply px-0
+    input
+        width: 80vw
+    .name-form
+        width: 80vw
+        input
+            width: 38vw

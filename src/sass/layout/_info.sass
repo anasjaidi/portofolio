@@ -3,7 +3,11 @@
 .about-text
     word-spacing: 0.25em
     line-height: 300%
-    @apply p-12  text-justify  uppercase px-32 mt-8
+    min-height: calc( 100vh - 350px )
+    display: flex
+    align-items: center
+    justify-content: center
+    @apply flex justify-center content-center   text-justify  uppercase flex justify-center content-center 
 .about-text p
     word-spacing: 0.25em
     line-height: 200%
@@ -15,14 +19,14 @@
     .about-text
         word-spacing: 0.15em
         line-height: 200%
-        @apply p-6  uppercase mt-8
+        @apply   uppercase
     .about-text p
         font-size: 18px
         text-align: justify
         text-align-last: center
 @media screen and (max-width: 712px)
+
     .about-text
-        margin-top: 100px
         word-spacing: 0.15em
         line-height: 1500%
         @apply p-2 uppercase

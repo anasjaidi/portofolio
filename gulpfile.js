@@ -66,7 +66,7 @@ const	imgminFunction = function () {
 			.pipe(dest(imgDest));
 }
 const	cvFunction = function () {
-	return	src('./src/pdf/jaidicv.pdf')
+	return	src('./src/pdf/*.pdf')
 			.pipe(dest('./dist/pdf'));
 }
 var	imgFunction = function (){
